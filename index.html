@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EDCC125 Practice Tests</title>
+<meta name="description" content="Five open-book practice tests for the EDCC125 exam, units 1 to 4.">
+<style>
+  :root {
+    --amber:#b45309; --amber-dark:#92400e; --gold:#d97706; --amber-soft:#fef3e2;
+    --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb; --ground:#faf7f2; --card:#ffffff;
+    --good:#15803d; --good-soft:#f0fdf4; --good-line:#bbf7d0;
+    --bad:#b91c1c; --bad-soft:#fef2f2; --bad-line:#fecaca;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --amber:#f59e0b; --amber-dark:#fbbf24; --gold:#fbbf24; --amber-soft:#2a2116;
+      --ink:#f3f4f6; --muted:#a1a1aa; --line:#3f3f46; --ground:#18181b; --card:#232326;
+      --good:#4ade80; --good-soft:#132a1b; --good-line:#1f5132;
+      --bad:#f87171; --bad-soft:#2d1515; --bad-line:#5c2323;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; font-family:ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+         color:var(--ink); background:var(--ground); line-height:1.55; font-size:15px;
+         overflow-wrap:anywhere; }
+  .wrap { max-width:820px; margin:0 auto; padding:24px 16px 64px; }
+  header { border-bottom:3px solid var(--amber); padding-bottom:14px; margin-bottom:18px; }
+  .eyebrow { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); font-weight:700; }
+  h1 { font-size:25px; margin:4px 0 4px; line-height:1.25; }
+  .meta { color:var(--muted); font-size:13.5px; margin:0; }
+
+  .tips { background:var(--amber-soft); border-radius:12px; padding:12px 16px; margin:0 0 18px; font-size:14px; }
+  .tips summary { cursor:pointer; font-weight:700; color:var(--amber); }
+  .tips ul { margin:8px 0 2px; padding-left:20px; }
+  .tips li { margin:4px 0; }
+
+  .tests { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:560px) { .tests { grid-template-columns:1fr; } }
+  .tcard { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px;
+           display:flex; flex-direction:column; gap:6px; }
+  .tcard.soon { opacity:.6; }
+  .tcard h2 { margin:0; font-size:17px; }
+  .tcard .desc { font-size:13.5px; color:var(--muted); flex:1; margin:0; }
+  .tcard .row { display:flex; justify-content:space-between; align-items:center; margin-top:8px; gap:8px; flex-wrap:wrap; }
+  .best { font-size:13px; color:var(--muted); }
+  .best b { color:var(--good); }
+  .btns { display:flex; gap:8px; flex-wrap:wrap; }
+  .go { background:var(--amber); color:#fff; border:0; border-radius:10px; padding:9px 18px;
+        font-weight:600; font-size:14px; cursor:pointer; font-family:inherit; }
+  .go:hover { background:var(--amber-dark); }
+  .go:disabled { background:var(--line); color:var(--muted); cursor:default; }
+  .ghost { background:var(--card); border:1px solid var(--amber); color:var(--amber); border-radius:10px;
+           padding:8px 14px; font-weight:600; font-size:13.5px; cursor:pointer; font-family:inherit; }
+
+  .topbar { position:sticky; top:0; z-index:5; background:var(--ground); border-bottom:2px solid var(--amber);
+            padding:10px 0; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .topbar .tname { font-weight:700; font-size:15px; flex:1; min-width:120px; }
+  .chip { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+          font-size:13px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .exit { background:none; border:1px solid var(--line); color:var(--muted); border-radius:10px;
+          padding:6px 12px; font-size:13px; cursor:pointer; font-family:inherit; }
+
+  .q { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin:14px 0; }
+  .qhead { display:flex; gap:10px; align-items:baseline; }
+  .qnum { flex:0 0 auto; font-weight:700; color:var(--amber); font-variant-numeric:tabular-nums; }
+  .qtext { font-weight:600; font-size:15px; }
+  .qlist { margin:8px 0 0; padding:0; list-style:none; font-size:14.5px; }
+  .qlist li { margin:3px 0; padding-left:26px; text-indent:-26px; }
+  .qlist b { display:inline-block; width:26px; text-indent:0; color:var(--muted); }
+  .opts { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+  .opt { display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:10px;
+         padding:9px 12px; cursor:pointer; font-size:14.5px; background:var(--card); }
+  .opt:hover { border-color:var(--gold); }
+  .opt input { margin-top:4px; accent-color:var(--amber); flex:0 0 auto; }
+  .opt .letter { font-weight:700; color:var(--muted); flex:0 0 auto; }
+  .opt.sel { border-color:var(--amber); background:var(--amber-soft); }
+  .review .opt { cursor:default; }
+  .opt.right { border-color:var(--good); background:var(--good-soft); }
+  .opt.right .letter { color:var(--good); }
+  .opt.wrongpick { border-color:var(--bad); background:var(--bad-soft); }
+  .opt.wrongpick .letter { color:var(--bad); }
+  .tag { font-size:12px; font-weight:700; margin-left:auto; padding-left:8px; flex:0 0 auto; }
+  .tag.ok { color:var(--good); } .tag.no { color:var(--bad); }
+  .fb { margin-top:10px; border-radius:10px; padding:10px 13px; font-size:14px; }
+  .fb.ok { background:var(--good-soft); border:1px solid var(--good-line); }
+  .fb.no { background:var(--bad-soft); border:1px solid var(--bad-line); }
+  .fb .verdict { font-weight:700; display:block; margin-bottom:2px; }
+  .fb.ok .verdict { color:var(--good); } .fb.no .verdict { color:var(--bad); }
+  .fb .src { display:block; margin-top:6px; font-size:13px; color:var(--muted); }
+
+  .submitrow { display:flex; flex-direction:column; align-items:center; gap:10px; margin:24px 0; text-align:center; }
+  .warn { background:var(--bad-soft); border:1px solid var(--bad-line); border-radius:10px; padding:10px 14px; font-size:14px; }
+  .result { background:var(--amber-soft); border-radius:12px; padding:16px; margin:16px 0;
+            display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .score { font-size:32px; font-weight:800; color:var(--amber); font-variant-numeric:tabular-nums; line-height:1.1; }
+  .result .sub { font-size:14px; flex:1; min-width:170px; }
+  .note { font-size:13px; color:var(--muted); margin-top:22px; }
+  button:focus-visible, .opt:focus-within { outline:2px solid var(--gold); outline-offset:2px; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   TEST DATA. Later tests are appended here; see README.md for the format.
+   c = index of the correct option in o (before shuffling).
+   tf:true = keep the options in the given order (true/false questions).
+   list = optional lettered statements shown under the stem (combo questions).
+   ===================================================================== */
+const TESTS = [
+{ id:"t1", num:1, title:"Test 1", ready:true,
+  desc:"Mixed units 1 to 4. Includes the real Socrates exam question.",
+  qs:[
+  { ref:"U1-15", q:"Which internal component of the education system is called its “heart”, where teacher and learners meet?",
+    o:["Education system policy","Education system administration","Structures for teaching","Education support services","If not one of these, mark here"], c:2,
+    why:"Structures for teaching (levels, institutions, curricula, educators, learners) is the heart: that is where teacher and learners meet. Administration manages, policy directs, and support services help from outside the classroom.",
+    src:"Textbook Ch 1: internal components of the education system" },
+  { ref:"U3-18", q:"At the end of the colonial era (1960) the adult literacy rate in Africa was about:",
+    o:["9%","22%","34%","50%","If not one of these, mark here"], c:0,
+    why:"About 9%. Colonial schooling reached very few people.",
+    src:"Textbook §3.6" },
+  { ref:"U2-01", q:"Socrates used the metaphor of a midwife to explain his role as an educator.",
+    o:["True","False"], c:0, tf:true,
+    why:"True, word for word from Chapter 2: “Socrates used the metaphor of a mid-wife to explain his role as educator.” He helped the young men bring out the answers already inside their own minds. (This one is a real exam question.)",
+    src:"Textbook Ch 2: Socrates" },
+  { ref:"U4-21", q:"The Union of South Africa came into being on:",
+    o:["31 May 1910","31 May 1961","16 June 1976","8 August 1881","If not one of these, mark here"], c:0,
+    why:"31 May 1910. 31 May 1961 is the republic, and 16 June 1976 is the Soweto uprising.",
+    src:"Textbook §4.8" },
+  { ref:"E1-Q12", q:"Which type of value relates to an individual’s beliefs regarding the relationships with other people, and includes friendship, co-operation, respect, equality, love for others, care, loyalty, mutual trust and to be of service?",
+    o:["Moral values","Social values","Affective/emotional values","Self-values","If not one of these, mark here"], c:1,
+    why:"Relationships with other people = social values. Moral values are about right and wrong; affective/emotional values are about guiding your own emotions and feelings; self-values are about how you relate to yourself.",
+    src:"QC 2 slides 36 to 37 (Ch 1: types of values). From the real eFundi Test 1." },
+  { ref:"U3-12", q:"Which was NOT a centre of Islamic learning in Africa named in the textbook?",
+    o:["Timbuktu","Harar","Zeila","Genadendal","If all of these were Islamic centres, mark here"], c:3,
+    why:"Genadendal is the Moravian mission station in South Africa (Chapter 4). Timbuktu, Harar and Zeila are the Islamic centres.",
+    src:"Textbook §3.4" },
+  { ref:"E2-Q5", q:"Humanism forms part of which era?",
+    o:["Renaissance","Middle Ages","Early modern period","Industrial Revolution","Mesolithic era"], c:0,
+    why:"Part of the Renaissance movement was a new philosophy, a new way of looking at the world and at life: Humanism.",
+    src:"Textbook Ch 2, p. 39. From the real eFundi Test 2." },
+  { ref:"U4-30", q:"Which is NOT one of the intrinsic goals (principles) of the post-1994 education policy?",
+    o:["Democratisation","Desegregation","Decentralisation","Nation building","If all of these are intrinsic goals, mark here"], c:3,
+    why:"Nation building is a societal (extrinsic) goal. The five intrinsic goals are democratisation, desegregation, decentralisation, equal educational opportunities and multicultural education.",
+    src:"Textbook §4.10, p. 110" },
+  { ref:"U1-21", q:"“Ideas and guidelines regarding the way in which an individual relates to him/herself as a person: independence, self-respect, self-discipline, patience.” These are:",
+    o:["Affective / emotional values","Self-values","Moral values","Social values","If not one of these, mark here"], c:1,
+    why:"“Relates to him/herself as a person” = self-values. The favourite swap is affective/emotional values, which are about guiding emotions and feelings.",
+    src:"QC 2 slide 42 (Ch 1: types of values)" },
+  { ref:"E3-Q1", q:"According to a 1997 study in Mali, enrolments in Islamic schools equalled about what percentage of public-school enrolments?",
+    o:["10%","15%","25%","50%"], c:2,
+    why:"Tsehaye (2014), relying on a 1997 study in Mali, reported that enrolments in these schools equal 25% of the enrolments in public schools.",
+    src:"Textbook §3.4, p. 68. From the real eFundi Test 3." },
+  { ref:"U2-13", q:"Aristotle’s school and his view of knowledge were:",
+    o:["the Academy; rationalism","the Lyceum; empiricism","the Lyceum; rationalism","the Academy; empiricism","If not one of these, mark here"], c:1,
+    why:"Aristotle: the Lyceum, and knowledge comes through the senses (empiricism). Plato: the Academy and rationalism.",
+    src:"Textbook Ch 2: Plato and Aristotle" },
+  { ref:"E4-Q2", q:"During the period of the Boer republics, education for ______ students was exclusively the task of the mission stations, without government assistance.",
+    o:["non-white","white","Dutch-speaking","English-speaking","If not one of these, mark here"], c:0,
+    why:"During the period of the Boer republics, education for non-white students was exclusively the task of the mission stations without government assistance.",
+    src:"Textbook Ch 4, p. 90. From the real eFundi Test 4 (re-optioned)." },
+  { ref:"U1-14", q:"Which is NOT a part-discipline of Education (the science)?",
+    o:["Sociology of Education","Curriculum Studies","Comparative Education","Educational Psychology","If all of these are part-disciplines, mark here"], c:4,
+    why:"All four are part-disciplines of Education, so the mark-here option is the answer. Habit: write T or F next to every line. No F means mark here.",
+    src:"Textbook Ch 1: part-disciplines of Education" },
+  { ref:"U3-08", q:"The Ancient Egyptians had a university around 3000 BC with a library of about 700 scrolls.",
+    o:["True","False"], c:1, tf:true,
+    why:"False. The University of Alexandria dates from the Greek (Hellenistic) era, after the 4th century BC, and its library held more than 700 000 scrolls. Two tokens are wrong.",
+    src:"Textbook §3.3" },
+  { ref:"U2-23", q:"What did the Islam Empire give Europe? Choose the MOST correct answer.",
+    o:["Paper","Hindu-Arabic numerals","Hindu-Arabic numerals and paper, and it rekindled interest in Greek-Roman knowledge","The printing press"], c:2,
+    why:"Paper and the numerals are both true but incomplete: the fullest answer wins. The printing press was Gutenberg’s (1453).",
+    src:"Textbook Ch 2: Islamic education" },
+  { ref:"U4-23", q:"The biggest grievance behind the Soweto uprising of 16 June 1976 was:",
+    o:["school fees","language (50/50 English and Afrikaans)","school buildings","the matric exam","If not one of these, mark here"], c:1,
+    why:"Various reasons gave momentum to the uproar in Soweto, of which language was the biggest.",
+    src:"Textbook §4.8.1, p. 103" },
+  { ref:"E1-Q25", q:"A country’s size, shape, location, topography, climate and biodiversity belong to which external determinant of the education system?",
+    o:["Demographical tendencies","Geographical characteristics","Social systems","Science and technology tendencies","If not one of these, mark here"], c:1,
+    why:"Geography is about the land. Demography is about the people (population size, growth, age, urbanisation).",
+    src:"Textbook Ch 1: external determinants. From the real eFundi Test 1." },
+  { ref:"E3-Q3", q:"The Greek ruler, Aristotle the Great, who ruled during the 4th century BC, built up a large empire by means of his conquests.",
+    o:["True","False"], c:1, tf:true,
+    why:"False. It was Alexander the Great. Aristotle was the philosopher of the Lyceum. One name swapped.",
+    src:"Textbook Ch 3, p. 67. From the real eFundi Test 3." },
+  { ref:"U2-10", q:"Which is NOT one of the Seven Liberal Arts?",
+    o:["Grammar","Rhetoric","Astronomy","Music","If all of these are liberal arts, mark here"], c:4,
+    why:"All four are liberal arts. The seven: Grammar, Dialectics, Rhetoric, Arithmetic, Geometry, Astronomy, Music.",
+    src:"Textbook Ch 2: Athens, the Didascaleum" },
+  { ref:"U4-41", q:"School governing bodies include representatives of the following. Which is wrong?",
+    o:["Parents","Teachers","Non-teaching staff","The provincial MEC","If all of these are on the SGB, mark here"], c:3,
+    why:"An SGB has parents, teachers, non-teaching staff, the principal, students and co-opted members. The MEC is not on it.",
+    src:"QC 8 slide 9 (Ch 4: post-1994 education)" },
+  { ref:"U1-38", q:"A teacher tells learners never to question the textbook’s political views and marks down any learner who does. Which activity-concept fits best?",
+    o:["Coaching","Indoctrination","Forming","Teaching","If not one of these, mark here"], c:1,
+    why:"Biased imprinting where questioning is not allowed = indoctrination. Forming is environmental influence where the learner has no real choice; teaching is open, planned activity.",
+    src:"Textbook Ch 1: activity-concepts" },
+  { ref:"U3-27", q:"Julius Nyerere’s “Education for Self-Reliance” (1967) was from:",
+    o:["Kenya","Tanzania","Zimbabwe","Botswana","If not one of these, mark here"], c:1,
+    why:"Tanzania. The model has since been completely abandoned.",
+    src:"Textbook §3.9.1" },
+  { ref:"X-02", q:"1948 is the year of the UN Universal Declaration of Human Rights, and also the year the National Party came to power in South Africa.",
+    o:["True","False"], c:0, tf:true,
+    why:"True. Both happened in 1948 (Chapter 2 and Chapter 4). Check each half: both hold.",
+    src:"Textbook Ch 2 and §4.9" },
+  { ref:"E2-Q2", q:"Epistemology is:",
+    o:["the theory of knowledge","the theory of the senses","the theory of education","the theory of observation"], c:0,
+    why:"“With his epistemology (theory of knowledge), Aristotle laid the basis for an entire line of sciences.” Observation is how Aristotle said we get knowledge, not what the word means.",
+    src:"Textbook Ch 2, pp. 29 to 30. From the real eFundi Test 2." },
+  { ref:"U4-13", q:"Why did the Voortrekkers leave the Cape? Choose the MOST correct answer.",
+    o:["The Anglicisation policy.","The Anglicisation policy, plus the abolition of slavery, rising land costs and class-over-race issues.","Rising land costs.","The abolition of slavery."], c:1,
+    why:"The book names the Anglicisation policy; the QC slides add the other reasons. Each short option is true but incomplete, so the fullest answer wins.",
+    src:"Textbook §4.4 and QC 7" },
+  { ref:"E1-Q21", q:"Which concept determines the concept “education”?",
+    o:["Gender","All roles in life","A particular role in life","Age","If not one of these, mark here"], c:1,
+    why:"Education prepares learners to fulfil their roles in life: all six of them. One particular role is training.",
+    src:"Textbook Ch 1, p. 2: education and the roles in life. From the real eFundi Test 1." },
+  { ref:"U3-17", q:"Colonial schools trained people for auxiliary positions such as clerks, interpreters, policemen, soldiers and:",
+    o:["doctors","engineers","lawyers","teachers at universities","If not one of these, mark here"], c:4,
+    why:"The missing one is preachers, which is not listed, so mark here. Colonial schools gave only enough education for auxiliary and subsidiary posts.",
+    src:"Textbook §3.6" },
+  { ref:"E2-Q17", q:"The school of the Litterator was attended by children aged:",
+    o:["9 to 13 years","8 to 11 years","10 to 14 years","7 to 10 years","6 to 9 years"], c:3,
+    why:"The elementary school (the school of the Litterator) was attended by children aged 7 to 10, learning to read, write and do elementary arithmetic.",
+    src:"Textbook Ch 2, pp. 31 to 32. From the real eFundi Test 2." },
+  { ref:"U4-27", q:"White government schools only opened to learners of all races after the 1994 elections.",
+    o:["True","False"], c:1, tf:true,
+    why:"False. They opened in 1991, announced in de Klerk’s speech of 2 February 1990.",
+    src:"Textbook §4.10" },
+  { ref:"U1-36", q:"Which of the following are INTERNAL components of the education system?",
+    list:["Education system policy","Demographical tendencies","Education support services","Education system administration"],
+    o:["A and B","A, C and D","B and D","All of these","None of these"], c:1,
+    why:"Policy, support services and administration are internal (with structures for teaching). Demographical tendencies are external. Tick the true lines, count them (three), and take the combo with three. The option letters on screen are shuffled, so ignore them.",
+    src:"Textbook Ch 1: internal components of the education system" },
+  { ref:"E3-Q5", q:"Why did most African governments choose to expand the inherited education system after independence in 1960?",
+    o:["They wanted to eliminate all European influences immediately.","There was pressure to increase access to education and few tested alternative models were available.","The inherited education systems were perfectly suited to African needs.","They were required by international organisations to keep the same system.","They wanted to reduce the number of students attending school."], c:1,
+    why:"Pressure to expand access, together with the absence of tested alternative models, dictated their choice: a linear expansion, more of the same.",
+    src:"Textbook §3.9.1, p. 72. From the real eFundi Test 3." },
+  { ref:"U2-20", q:"The University of Bologna (1158) was known for:",
+    o:["Theology","Law","Medicine","Philosophy","If not one of these, mark here"], c:1,
+    why:"Bologna = Law. Paris = Theology, Salerno = Medicine.",
+    src:"Textbook Ch 2: medieval universities" },
+  { ref:"E4-Q20", q:"Which of the following was NOT a characteristic of Indian education in Natal before 1910?",
+    o:["The unwillingness of parents to allow their daughters to attend school made progress of the schools difficult.","A shortage of teachers made progress of the schools difficult.","Education was through the medium of English.","If all are characteristics, mark here"], c:3,
+    why:"All three lines are in the book, almost word for word. No F, so mark here.",
+    src:"Textbook §4.6.1, p. 99. From the real eFundi Test 4." },
+  { ref:"U1-18", q:"Which is NOT one of the external determinants of the education system?",
+    o:["Geographical characteristics","Demographical tendencies","Education support services","Worldview and religion","If all of these are external determinants, mark here"], c:2,
+    why:"Education support services is an internal component. The others are external determinants.",
+    src:"Textbook Ch 1: external determinants" },
+  { ref:"X-08", q:"In the last class of the semester, the lecturer said the best teacher is the one who:",
+    o:["experienced it, and did not just read about it","has the thickest textbook","sings the best goodbye song"], c:0,
+    why:"A free mark, to breathe. (Said in class on 17 Oct, not in the book.)",
+    src:"Last class, 17 Oct" },
+  { ref:"U3-33", q:"Which was NOT part of the IMF and World Bank structural adjustment package?",
+    o:["Reduce government expenditure","Privatise State corporations","Devalue the currency","Increase government spending on education","If all of these were part of it, mark here"], c:3,
+    why:"Education spending actually fell, from US$10 billion to US$8.9 billion (1980 to 1983).",
+    src:"Textbook §3.10" },
+  { ref:"E2-Q14", q:"During the Renaissance era (mark the incorrect statement):",
+    o:["The lecture method of teaching was supplemented with the textbook method.","The content of education also included the Classic subjects.","The privilege of education was expanded to include everyone.","The aim was expanded to also include some preparation for this life and world.","If all are correct, mark here"], c:2,
+    why:"The privilege of education was expanded to include the sons of the aristocracy, not everyone. The other three lines are in the book.",
+    src:"Textbook Ch 2, pp. 40 to 41. From the real eFundi Test 2." },
+  { ref:"U4-47", q:"OBE’s eight critical outcomes were designed by:",
+    o:["the HSRC","SAQA","the National Party","UNESCO","If not one of these, mark here"], c:1,
+    why:"SAQA designed the critical outcomes.",
+    src:"Textbook §4.10" },
+  { ref:"E1-Q15", q:"“Cornerstone values are consistent, universal and transcultural.” This describes which property of values?",
+    o:["Values are personal","Values have a universal character","Values are influenced by culture","Values are subjective","If not one of these, mark here"], c:1,
+    why:"Consistent, universal, transcultural cornerstone values = values have a universal character.",
+    src:"QC 1 slide 30 (Ch 1: properties of values). From the real eFundi Test 1." },
+  { ref:"U3-09", q:"At Alexandria, the first person to calculate the size of the earth was:",
+    o:["Euclid","Archimedes","Eratosthenes","Aristarchus","If not one of these, mark here"], c:2,
+    why:"Eratosthenes. Euclid = geometry, Archimedes = physics, Aristarchus = the parts of speech.",
+    src:"Textbook §3.3" },
+  { ref:"U2-33", q:"Herbart held the first Chair of Education (Göttingen) and is the father of:",
+    o:["the work school, student-centred","the listen school, teacher-centred","the palace school","the kindergarten","If not one of these, mark here"], c:1,
+    why:"Herbart’s listen school is still the dominant model worldwide. Dewey’s work school was student-centred and a passing fad.",
+    src:"Textbook Ch 2: Herbart" },
+  { ref:"E4-Q7", q:"In 1983, the then Minister of Internal Affairs delegated all powers for Indian education (under the Indian Education Act of 1965) to:",
+    o:["the South African Indian Council","the Natal Provincial Council","the HSRC","SAQA","If not one of these, mark here"], c:0,
+    why:"In 1983 the Minister of Internal Affairs, F.W. de Klerk, delegated all powers attributed to him by the Indian Education Act of 1965 to the South African Indian Council.",
+    src:"Textbook §4.8.3.2, p. 106. From the real eFundi Test 4 (re-optioned)." },
+  { ref:"U1-23", q:"Physical values are beliefs about the biological and physiological (natural) needs of all people: survival, nutrition, clothing, shelter and health.",
+    o:["True","False"], c:1, tf:true,
+    why:"False. That is the definition of LIFE values. Physical values are about appraising physical appearance (posture, fitness, neatness).",
+    src:"Textbook Ch 1: types of values" },
+  { ref:"E3-Q2", q:"Ancient Egyptian society comprised a number of social classes. Which of these was NOT one of them?",
+    o:["Rulers (the Pharaohs)","Priests","Judges","Slaves","If all of these were social classes, mark here"], c:2,
+    why:"The book lists rulers, priests, nobles, soldiers, artisans, merchants, farmers and, at the bottom, slaves. No judges.",
+    src:"Textbook Ch 3, p. 66. From the real eFundi Test 3 (re-optioned)." },
+  { ref:"X-06", q:"Which oldest-university claim does the textbook treat as the African counter-claim?",
+    o:["Paris (about 1080)","Alexandria (4th century BC)","Al-Karaouine, Fez (859)","Bologna (1158)","If not one of these, mark here"], c:2,
+    why:"Al-Karaouine in Fez, Morocco, founded in 859, is the African counter-claim to the oldest university in the world.",
+    src:"Textbook Ch 2 and §3.4" },
+  { ref:"U4-02", q:"The first school at the Cape (1658) was for:",
+    o:["white children","slaves from Angola","Khoikhoi children","Indian children","If not one of these, mark here"], c:1,
+    why:"Slaves from Angola. They were taught Dutch and converted to Christianity.",
+    src:"Textbook §4.2.1" },
+  { ref:"U2-02", q:"Plato used the metaphor of a midwife to explain his role as an educator.",
+    o:["True","False"], c:1, tf:true,
+    why:"False. It was Socrates (look back at Question 3). One name swapped in a line you already met: check every name again.",
+    src:"Textbook Ch 2: Socrates" },
+  { ref:"E1-Q14", q:"Achievement, insight, logic, knowledge, creative thinking and thinking skills are examples of:",
+    o:["Occupational values","Intellectual values","Self-values","Economic values","If not one of these, mark here"], c:1,
+    why:"These are intellectual values: the mind and knowledge.",
+    src:"Textbook Ch 1: types of values. From the real eFundi Test 1." },
+  { ref:"ART-u3a-Q23", q:"In 2006, for the first time, ___ into Africa exceeded aid (US$48 billion vs US$40 billion).",
+    o:["foreign direct investment (FDI)","China-Africa trade","structural adjustment lending","export earnings","If not one of these, mark here"], c:0,
+    why:"Foreign direct investment (US$48 billion) exceeded aid (US$40 billion) for the first time in 2006.",
+    src:"Textbook §3.11" },
+  { ref:"E2-Q18", q:"The Romans had no formative influence on western civilisation.",
+    o:["True","False"], c:1, tf:true,
+    why:"False. The book says the Romans had a formative influence on western civilisation. One word, “no”, was inserted.",
+    src:"Textbook Ch 2, p. 30. From the real eFundi Test 2." }
+  ]},
+{ id:"t2", num:2, title:"Test 2", ready:false, desc:"Coming soon.", qs:[] },
+{ id:"t3", num:3, title:"Test 3", ready:false, desc:"Coming soon.", qs:[] },
+{ id:"t4", num:4, title:"Test 4", ready:false, desc:"Coming soon.", qs:[] },
+{ id:"t5", num:5, title:"Test 5", ready:false, desc:"Coming soon.", qs:[] }
+];
+
+/* =====================================================================
+   ENGINE. No need to touch this when adding a test.
+   ===================================================================== */
+const LETTERS = ["A","B","C","D","E","F"];
+const SCORE_KEY = "edcc125-scores-v1", PROG_KEY = "edcc125-progress-v1";
+const app = document.getElementById("app");
+let cur = null;      // { test, order:[[optIdx...]...], picks:[slot|-1...] }
+let wrongOnly = false;
+
+function load(key){ try { return JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch(e){ return {}; } }
+function save(key, val){ try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){} }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function shuffle(a){ const x=a.slice(); for(let i=x.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=x[i]; x[i]=x[j]; x[j]=t; } return x; }
+function top(){ window.scrollTo(0,0); }
+
+function home(){
+  cur = null; wrongOnly = false;
+  const scores = load(SCORE_KEY), prog = load(PROG_KEY);
+  let h = '<header><div class="eyebrow">EDCC125 · Exam practice</div><h1>Practice tests</h1>' +
+    '<p class="meta">Open book · 50 questions · 1 mark each · units 1 to 4. Scores stay on this device only.</p></header>' +
+    '<details class="tips"><summary>Four habits that save marks</summary><ul>' +
+    '<li><b>NOT / wrong / incorrect in the stem?</b> Write T or F next to every line. The F is the answer. No F at all: take the “mark here” option.</li>' +
+    '<li><b>“If not one of these, mark here”</b> is sometimes the real answer and sometimes bait. Judge A to D first; then it answers itself.</li>' +
+    '<li><b>Combo options (“A and C”):</b> tick the true statements, count them, and take the combo with that count. The option letters are shuffled.</li>' +
+    '<li><b>“MOST correct”:</b> several options are true; the fullest, most complete one wins. And check every name and number in a familiar line: one swapped word makes it false.</li>' +
+    '</ul></details><div class="tests">';
+  TESTS.forEach(function(t){
+    const s = scores[t.id], inProg = prog[t.id];
+    let best = 'Not attempted yet';
+    if (s) best = 'Best: <b>' + s.best + '/' + t.qs.length + '</b> · last ' + s.last + '/' + t.qs.length;
+    if (!t.ready) {
+      h += '<div class="tcard soon"><h2>' + esc(t.title) + '</h2><p class="desc">Coming soon.</p>' +
+           '<div class="row"><span class="best"></span><button class="go" disabled>Coming soon</button></div></div>';
+      return;
+    }
+    h += '<div class="tcard"><h2>' + esc(t.title) + '</h2><p class="desc">' + esc(t.desc) + ' ' + t.qs.length + ' questions.</p>' +
+         '<div class="row"><span class="best">' + best + '</span><div class="btns">' +
+         (inProg ? '<button class="ghost" data-fresh="' + t.id + '">Start over</button><button class="go" data-start="' + t.id + '">Resume</button>'
+                 : '<button class="go" data-start="' + t.id + '">Start</button>') +
+         '</div></div></div>';
+  });
+  h += '</div><p class="note">Every question shows the answer, why, and where it is in the textbook after you submit. Built from the EDCC125 textbook (units 1 to 4), the QC slides and the four eFundi chapter tests.</p>';
+  app.innerHTML = h;
+  app.querySelectorAll("[data-start]").forEach(function(b){ b.onclick = function(){ start(b.dataset.start, false); }; });
+  app.querySelectorAll("[data-fresh]").forEach(function(b){ b.onclick = function(){ start(b.dataset.fresh, true); }; });
+  top();
+}
+
+function start(id, fresh){
+  const test = TESTS.find(function(t){ return t.id === id; });
+  const prog = load(PROG_KEY);
+  const saved = prog[id];
+  if (!fresh && saved && saved.order && saved.order.length === test.qs.length) {
+    cur = { test:test, order:saved.order, picks:saved.picks };
+  } else {
+    const order = test.qs.map(function(q){
+      const base = q.o.map(function(_,i){ return i; });
+      return q.tf ? base : shuffle(base);   // true/false keeps its order; everything else shuffles
+    });
+    cur = { test:test, order:order, picks:test.qs.map(function(){ return -1; }) };
+    saveProgress();
+  }
+  renderTest();
+}
+
+function saveProgress(){
+  const prog = load(PROG_KEY);
+  prog[cur.test.id] = { order:cur.order, picks:cur.picks };
+  save(PROG_KEY, prog);
+}
+function clearProgress(id){ const prog = load(PROG_KEY); delete prog[id]; save(PROG_KEY, prog); }
+
+function stemHtml(q, i){
+  let h = '<div class="qhead"><span class="qnum">' + (i+1) + '.</span><span class="qtext">' + esc(q.q) + '</span></div>';
+  if (q.list) {
+    h += '<ul class="qlist">' + q.list.map(function(s,k){ return '<li><b>' + LETTERS[k] + ')</b>' + esc(s) + '</li>'; }).join('') + '</ul>';
+  }
+  return h;
+}
+
+function renderTest(){
+  const t = cur.test;
+  let h = '<div class="topbar"><span class="tname">' + esc(t.title) + '</span>' +
+          '<span class="chip" id="count"></span><button class="exit" id="exit">Back to tests</button></div>';
+  t.qs.forEach(function(q, i){
+    h += '<div class="q">' + stemHtml(q, i) + '<div class="opts">';
+    cur.order[i].forEach(function(oi, slot){
+      const sel = cur.picks[i] === slot;
+      h += '<label class="opt' + (sel ? ' sel' : '') + '"><input type="radio" name="q' + i + '" value="' + slot + '"' + (sel ? ' checked' : '') + '>' +
+           '<span class="letter">' + LETTERS[slot] + ')</span><span>' + esc(q.o[oi]) + '</span></label>';
+    });
+    h += '</div></div>';
+  });
+  h += '<div class="submitrow" id="submitrow"><button class="go" id="submit">Mark my test</button></div>';
+  app.innerHTML = h;
+  app.querySelectorAll('input[type=radio]').forEach(function(inp){
+    inp.onchange = function(){
+      const i = +inp.name.slice(1);
+      cur.picks[i] = +inp.value;
+      inp.closest('.opts').querySelectorAll('.opt').forEach(function(l){ l.classList.remove('sel'); });
+      inp.closest('.opt').classList.add('sel');
+      saveProgress(); updateCount();
+    };
+  });
+  document.getElementById('exit').onclick = home;
+  document.getElementById('submit').onclick = trySubmit;
+  updateCount(); top();
+}
+
+function updateCount(){
+  const n = cur.picks.filter(function(p){ return p >= 0; }).length;
+  document.getElementById('count').textContent = n + '/' + cur.test.qs.length + ' answered';
+}
+
+function trySubmit(){
+  const blanks = [];
+  cur.picks.forEach(function(p,i){ if (p < 0) blanks.push(i+1); });
+  if (!blanks.length) return mark();
+  const row = document.getElementById('submitrow');
+  row.innerHTML = '<div class="warn">You left ' + blanks.length + ' blank: Q' + blanks.slice(0,12).join(', Q') + (blanks.length > 12 ? ' …' : '') +
+    '. Blanks count as wrong.</div><div class="btns"><button class="ghost" id="keep">Keep going</button><button class="go" id="anyway">Mark it anyway</button></div>';
+  document.getElementById('keep').onclick = function(){ row.innerHTML = '<button class="go" id="submit">Mark my test</button>'; document.getElementById('submit').onclick = trySubmit; };
+  document.getElementById('anyway').onclick = mark;
+}
+
+function mark(){
+  const t = cur.test;
+  let score = 0;
+  cur.result = t.qs.map(function(q, i){
+    const rightSlot = cur.order[i].indexOf(q.c);
+    const ok = cur.picks[i] === rightSlot;
+    if (ok) score++;
+    return { ok:ok, rightSlot:rightSlot };
+  });
+  cur.score = score;
+  const scores = load(SCORE_KEY);
+  const prev = scores[t.id];
+  scores[t.id] = { best: prev ? Math.max(prev.best, score) : score, last: score, when: new Date().toISOString().slice(0,10) };
+  save(SCORE_KEY, scores);
+  clearProgress(t.id);
+  renderReview();
+}
+
+function renderReview(){
+  const t = cur.test, total = t.qs.length, score = cur.score;
+  const pct = Math.round(score * 100 / total);
+  let h = '<div class="topbar"><span class="tname">' + esc(t.title) + ': marked</span><button class="exit" id="exit">Back to tests</button></div>' +
+    '<div class="result"><div class="score">' + score + '/' + total + '</div><div class="sub"><b>' + pct + '%</b>. ' +
+    (total - score) + ' to look at. Each question below shows the right answer (green), your pick if it was wrong (red), why, and where to find it.</div>' +
+    '<div class="btns"><button class="ghost" id="filter">' + (wrongOnly ? 'Show all questions' : 'Show only my mistakes') + '</button>' +
+    '<button class="go" id="again">Try again (new option order)</button></div></div><div class="review">';
+  t.qs.forEach(function(q, i){
+    const r = cur.result[i], pick = cur.picks[i];
+    if (wrongOnly && r.ok) return;
+    h += '<div class="q">' + stemHtml(q, i) + '<div class="opts">';
+    cur.order[i].forEach(function(oi, slot){
+      let cls = 'opt', tag = '';
+      if (slot === r.rightSlot) { cls += ' right'; tag = '<span class="tag ok">' + (slot === pick ? 'your answer ✓' : 'correct') + '</span>'; }
+      else if (slot === pick) { cls += ' wrongpick'; tag = '<span class="tag no">your answer</span>'; }
+      h += '<div class="' + cls + '"><span class="letter">' + LETTERS[slot] + ')</span><span>' + esc(q.o[oi]) + '</span>' + tag + '</div>';
+    });
+    h += '</div><div class="fb ' + (r.ok ? 'ok' : 'no') + '"><span class="verdict">' +
+         (r.ok ? 'Right.' : (pick < 0 ? 'Left blank. Answer: ' : 'Not this time. Answer: ') + LETTERS[r.rightSlot] + ')') +
+         '</span>' + esc(q.why) + '<span class="src">Source: ' + esc(q.src) + '</span></div></div>';
+  });
+  if (wrongOnly && score === total) h += '<p class="note">No mistakes to show. Full marks.</p>';
+  h += '</div><div class="submitrow"><button class="ghost" id="back2">Back to tests</button></div>';
+  app.innerHTML = h;
+  document.getElementById('exit').onclick = home;
+  document.getElementById('back2').onclick = home;
+  document.getElementById('again').onclick = function(){ start(t.id, true); };
+  document.getElementById('filter').onclick = function(){ wrongOnly = !wrongOnly; renderReview(); };
+  top();
+}
+
+home();
+</script>
+</body>
+</html>
