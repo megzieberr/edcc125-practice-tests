@@ -444,7 +444,7 @@ function trySubmit(){
   cur.picks.forEach(function(p,i){ if (p < 0) blanks.push(i+1); });
   if (!blanks.length) return mark();
   const row = document.getElementById('submitrow');
-  row.innerHTML = '<div class="warn">You left ' + blanks.length + ' blank: Q' + blanks.slice(0,12).join(', Q') + (blanks.length > 12 ? ' …' : '') +
+  row.innerHTML = '<div class="warn">You left ' + blanks.length + ' blank: Q' + blanks.slice(0,12).join(', Q') + (blanks.length > 12 ? ' and more' : '') +
     '. Blanks count as wrong.</div><div class="btns"><button class="ghost" id="keep">Keep going</button><button class="go" id="anyway">Mark it anyway</button></div>';
   document.getElementById('keep').onclick = function(){ row.innerHTML = '<button class="go" id="submit">Mark my test</button>'; document.getElementById('submit').onclick = trySubmit; };
   document.getElementById('anyway').onclick = mark;
