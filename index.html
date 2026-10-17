@@ -338,7 +338,7 @@ function load(key){ try { return JSON.parse(localStorage.getItem(key) || "{}") |
 function save(key, val){ try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){} }
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 function shuffle(a){ const x=a.slice(); for(let i=x.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=x[i]; x[i]=x[j]; x[j]=t; } return x; }
-function top(){ window.scrollTo(0,0); }
+function toTop(){ window.scrollTo(0,0); }
 
 function home(){
   cur = null; wrongOnly = false;
@@ -370,7 +370,7 @@ function home(){
   app.innerHTML = h;
   app.querySelectorAll("[data-start]").forEach(function(b){ b.onclick = function(){ start(b.dataset.start, false); }; });
   app.querySelectorAll("[data-fresh]").forEach(function(b){ b.onclick = function(){ start(b.dataset.fresh, true); }; });
-  top();
+  toTop();
 }
 
 function start(id, fresh){
@@ -431,7 +431,7 @@ function renderTest(){
   });
   document.getElementById('exit').onclick = home;
   document.getElementById('submit').onclick = trySubmit;
-  updateCount(); top();
+  updateCount(); toTop();
 }
 
 function updateCount(){
@@ -497,7 +497,7 @@ function renderReview(){
   document.getElementById('back2').onclick = home;
   document.getElementById('again').onclick = function(){ start(t.id, true); };
   document.getElementById('filter').onclick = function(){ wrongOnly = !wrongOnly; renderReview(); };
-  top();
+  toTop();
 }
 
 home();
